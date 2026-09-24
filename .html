@@ -1,0 +1,4538 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BSIT 1-4 Dashboard</title>
+
+<style>
+
+/* =========================================================
+   BASE
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #090b10;
+    --sidebar: #0d1017;
+    --card: #121620;
+    --card-hover: #171c28;
+    --input: #0c1017;
+
+    --border: rgba(255,255,255,.07);
+    --border-hover: rgba(255,255,255,.13);
+
+    --text: #f7f8fc;
+    --muted: #8d95a6;
+
+    --primary: #795cff;
+    --primary-hover: #6849ee;
+
+    --green: #35d39b;
+    --red: #ff6070;
+    --yellow: #ffc45c;
+
+    --radius: 16px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 75% -10%,
+            rgba(121,92,255,.12),
+            transparent 35%
+        ),
+        var(--bg);
+
+    color: var(--text);
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2a3040;
+    border-radius: 20px;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.primary-btn {
+    border: 0;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            #6549e9
+        );
+
+    padding: 11px 17px;
+
+    border-radius: 11px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    box-shadow:
+        0 7px 22px rgba(121,92,255,.18);
+
+    transition:
+        .2s ease;
+}
+
+.primary-btn:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 10px 28px rgba(121,92,255,.28);
+}
+
+.secondary-btn {
+    border: 1px solid var(--border);
+
+    background: var(--card);
+
+    color: var(--text);
+
+    padding: 10px 15px;
+
+    border-radius: 10px;
+
+    transition: .2s;
+}
+
+.secondary-btn:hover {
+    background: var(--card-hover);
+
+    border-color:
+        var(--border-hover);
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+    position: fixed;
+
+    left: 0;
+    top: 0;
+
+    width: 250px;
+    height: 100vh;
+
+    background:
+        rgba(13,16,23,.92);
+
+    border-right:
+        1px solid var(--border);
+
+    padding: 22px 14px;
+
+    z-index: 50;
+
+    backdrop-filter:
+        blur(20px);
+}
+
+.logo {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    padding:
+        6px 12px 27px;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #8067ff,
+            #5b3fe4
+        );
+
+    box-shadow:
+        0 9px 25px
+        rgba(121,92,255,.25);
+
+    font-size: 19px;
+}
+
+.logo-text {
+    font-size: 20px;
+
+    font-weight: 800;
+
+    letter-spacing: -.5px;
+}
+
+.logo-text span {
+    color: #8872ff;
+}
+
+.nav-title {
+    padding:
+        0 12px;
+
+    margin:
+        13px 0 8px;
+
+    color: #697181;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.3px;
+
+    text-transform: uppercase;
+}
+
+.nav-btn {
+    width: 100%;
+
+    border: 0;
+
+    background: transparent;
+
+    color: #9ca4b4;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding:
+        11px 12px;
+
+    border-radius: 11px;
+
+    margin-bottom: 3px;
+
+    text-align: left;
+
+    font-size: 13px;
+
+    transition:
+        .18s ease;
+}
+
+.nav-btn:hover {
+    color: white;
+
+    background:
+        rgba(255,255,255,.045);
+}
+
+.nav-btn.active {
+    color: white;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(121,92,255,.19),
+            rgba(121,92,255,.07)
+        );
+
+    box-shadow:
+        inset 2px 0 0
+        var(--primary);
+}
+
+.nav-icon {
+    width: 21px;
+
+    text-align: center;
+
+    font-size: 15px;
+}
+
+.nav-badge {
+    margin-left: auto;
+
+    min-width: 20px;
+    height: 20px;
+
+    padding: 0 6px;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background:
+        var(--red);
+
+    color: white;
+
+    font-size: 10px;
+
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+    margin-left: 250px;
+
+    min-height: 100vh;
+
+    padding:
+        31px 34px 50px;
+}
+
+.topbar {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    margin-bottom: 27px;
+}
+
+.topbar h2 {
+    font-size: 27px;
+
+    letter-spacing: -.8px;
+
+    margin-bottom: 4px;
+}
+
+.topbar p {
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+.top-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+}
+
+.icon-btn {
+    width: 42px;
+    height: 42px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 11px;
+
+    background:
+        rgba(18,22,32,.9);
+
+    color: white;
+
+    position: relative;
+
+    font-size: 16px;
+
+    transition: .2s;
+}
+
+.icon-btn:hover {
+    background:
+        var(--card-hover);
+
+    border-color:
+        var(--border-hover);
+}
+
+.bell-dot {
+    position: absolute;
+
+    right: 6px;
+    top: 5px;
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: var(--red);
+
+    display: none;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(255,96,112,.12);
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 13px;
+
+    margin-bottom: 26px;
+}
+
+.stat-card {
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18,22,32,.96),
+            rgba(14,17,25,.96)
+        );
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        var(--radius);
+
+    padding: 17px;
+
+    transition:
+        .2s;
+}
+
+.stat-card:hover {
+    transform:
+        translateY(-2px);
+
+    border-color:
+        var(--border-hover);
+}
+
+.stat-top {
+    display: flex;
+
+    justify-content: space-between;
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+    margin-bottom: 11px;
+}
+
+.stat-icon {
+    font-size: 17px;
+}
+
+.stat-number {
+    font-size: 27px;
+
+    font-weight: 800;
+
+    letter-spacing: -.5px;
+}
+
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+.toolbar {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    margin-bottom: 21px;
+}
+
+.search {
+    flex: 1;
+
+    position: relative;
+}
+
+.search input,
+.toolbar select {
+    width: 100%;
+
+    height: 42px;
+
+    border:
+        1px solid var(--border);
+
+    outline: none;
+
+    background:
+        rgba(15,18,26,.9);
+
+    color: white;
+
+    border-radius: 10px;
+
+    padding:
+        0 13px;
+
+    font-size: 12px;
+
+    transition: .2s;
+}
+
+.search input::placeholder {
+    color: #626a7a;
+}
+
+.search input:focus,
+.toolbar select:focus {
+    border-color:
+        rgba(121,92,255,.6);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(121,92,255,.08);
+}
+
+.toolbar select {
+    width: 160px;
+}
+
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.section-title {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin:
+        24px 0 13px;
+}
+
+.section-title h3 {
+    font-size: 16px;
+
+    letter-spacing: -.2px;
+}
+
+.section-title span {
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   REVIEWER GRID
+========================================================= */
+
+.reviewer-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(275px, 1fr)
+        );
+
+    gap: 13px;
+}
+
+.reviewer-card {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18,22,32,.96),
+            rgba(14,17,25,.96)
+        );
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        var(--radius);
+
+    padding: 17px;
+
+    transition:
+        transform .2s,
+        border .2s,
+        background .2s;
+}
+
+.reviewer-card:hover {
+    transform:
+        translateY(-3px);
+
+    background:
+        var(--card-hover);
+
+    border-color:
+        var(--border-hover);
+}
+
+.completed-card {
+    opacity: .57;
+}
+
+.card-header {
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    gap: 10px;
+}
+
+.card-header h3 {
+    font-size: 15px;
+
+    line-height: 1.4;
+
+    letter-spacing: -.1px;
+}
+
+.category {
+    display: inline-flex;
+
+    margin-top: 9px;
+
+    padding:
+        4px 8px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(121,92,255,.11);
+
+    color:
+        #a99aff;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing: .4px;
+}
+
+.due {
+    margin-top: 14px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+.due strong {
+    color: #dfe3eb;
+}
+
+.notes {
+    color: #a9b0be;
+
+    margin-top: 11px;
+
+    font-size: 12px;
+
+    line-height: 1.55;
+
+    white-space: pre-wrap;
+}
+
+.file-box {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    margin-top: 13px;
+
+    padding: 9px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(255,255,255,.035);
+
+    border:
+        1px solid var(--border);
+}
+
+.file-info {
+    flex: 1;
+
+    min-width: 0;
+}
+
+.file-info strong {
+    display: block;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+
+    font-size: 11px;
+}
+
+.file-info small {
+    color: var(--muted);
+
+    font-size: 9px;
+}
+
+.open-file {
+    border: 0;
+
+    background:
+        rgba(121,92,255,.15);
+
+    color:
+        #a99aff;
+
+    padding:
+        6px 8px;
+
+    border-radius: 7px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+.card-actions {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr 1fr;
+
+    gap: 6px;
+
+    margin-top: 13px;
+}
+
+.card-actions button {
+    border:
+        1px solid var(--border);
+
+    background:
+        rgba(255,255,255,.02);
+
+    color: #aab1bf;
+
+    border-radius: 8px;
+
+    padding: 7px;
+
+    font-size: 10px;
+
+    transition: .18s;
+}
+
+.card-actions button:hover {
+    background:
+        rgba(255,255,255,.06);
+
+    color: white;
+}
+
+.card-actions .complete {
+    color: var(--green);
+}
+
+.card-actions .delete {
+    color: var(--red);
+}
+
+
+/* =========================================================
+   ANNOUNCEMENTS
+========================================================= */
+
+.announcement-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(300px, 1fr)
+        );
+
+    gap: 14px;
+}
+
+.announcement-card {
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18,22,32,.96),
+            rgba(14,17,25,.96)
+        );
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        var(--radius);
+
+    padding: 18px;
+
+    transition: .2s;
+}
+
+.announcement-card:hover {
+    transform:
+        translateY(-3px);
+
+    background:
+        var(--card-hover);
+
+    border-color:
+        var(--border-hover);
+}
+
+.announcement-card.new {
+    border-color:
+        rgba(121,92,255,.45);
+}
+
+.announcement-card.new::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    width: 3px;
+
+    background:
+        var(--primary);
+}
+
+.announcement-header {
+    display: flex;
+
+    gap: 12px;
+
+    align-items: flex-start;
+}
+
+.announcement-icon {
+    width: 38px;
+    height: 38px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background:
+        rgba(121,92,255,.12);
+
+    font-size: 17px;
+}
+
+.announcement-header h3 {
+    font-size: 14px;
+
+    line-height: 1.4;
+
+    margin-bottom: 4px;
+}
+
+.announcement-date {
+    color: #687182;
+
+    font-size: 10px;
+}
+
+.announcement-message {
+    color: #abb2c0;
+
+    font-size: 12px;
+
+    line-height: 1.65;
+
+    margin-top: 14px;
+
+    white-space: pre-wrap;
+}
+
+.announcement-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    margin-top: 13px;
+}
+
+.announcement-actions button {
+    border: 0;
+
+    background: transparent;
+
+    color:
+        #7e8594;
+
+    font-size: 10px;
+
+    transition: .2s;
+}
+
+.announcement-actions button:hover {
+    color: var(--red);
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.empty {
+    text-align: center;
+
+    border:
+        1px dashed
+        rgba(255,255,255,.1);
+
+    border-radius:
+        var(--radius);
+
+    padding: 55px 20px;
+
+    color: var(--muted);
+}
+
+.empty-icon {
+    font-size: 32px;
+
+    margin-bottom: 11px;
+
+    opacity: .8;
+}
+
+.empty h3 {
+    color: white;
+
+    font-size: 14px;
+
+    margin-bottom: 5px;
+}
+
+.empty p {
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   MODALS
+========================================================= */
+
+.modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background:
+        rgba(0,0,0,.72);
+
+    backdrop-filter:
+        blur(10px);
+
+    z-index: 100;
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+.modal {
+    width:
+        min(600px, 100%);
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    background:
+        #11151e;
+
+    border:
+        1px solid var(--border-hover);
+
+    border-radius:
+        18px;
+
+    padding: 24px;
+
+    box-shadow:
+        0 30px 100px
+        rgba(0,0,0,.55);
+
+    animation:
+        modalIn .2s ease;
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform:
+            translateY(12px)
+            scale(.98);
+    }
+
+    to {
+        opacity: 1;
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+.modal-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 21px;
+}
+
+.modal-header h2 {
+    font-size: 18px;
+}
+
+.close {
+    width: 34px;
+    height: 34px;
+
+    border: 0;
+
+    border-radius: 9px;
+
+    background:
+        rgba(255,255,255,.05);
+
+    color: white;
+
+    font-size: 18px;
+}
+
+.form-group {
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    display: block;
+
+    color: #aeb5c3;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+
+    border:
+        1px solid var(--border);
+
+    background:
+        var(--input);
+
+    color: white;
+
+    border-radius: 10px;
+
+    padding:
+        10px 11px;
+
+    outline: none;
+
+    font-size: 12px;
+
+    transition: .2s;
+}
+
+.form-group textarea {
+    min-height: 105px;
+
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color:
+        rgba(121,92,255,.65);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(121,92,255,.08);
+}
+
+.two-column {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 11px;
+}
+
+.file-upload {
+    border:
+        1px dashed
+        rgba(255,255,255,.12);
+
+    border-radius: 11px;
+
+    padding: 15px;
+
+    text-align: center;
+
+    color: var(--muted);
+
+    background:
+        rgba(255,255,255,.015);
+
+    font-size: 11px;
+}
+
+.file-upload input {
+    margin-top: 8px;
+
+    width: 100%;
+
+    color: var(--muted);
+
+    font-size: 10px;
+}
+
+.selected-file {
+    color: var(--green);
+
+    margin-top: 7px;
+
+    font-size: 10px;
+}
+
+.modal-footer {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 8px;
+
+    margin-top: 19px;
+}
+
+
+/* =========================================================
+   NOTIFICATION PANEL
+========================================================= */
+
+.notification-panel {
+    position: fixed;
+
+    right: 28px;
+
+    top: 82px;
+
+    width: 350px;
+
+    max-width:
+        calc(100vw - 35px);
+
+    background:
+        #11151e;
+
+    border:
+        1px solid var(--border-hover);
+
+    border-radius: 15px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 25px 80px
+        rgba(0,0,0,.5);
+
+    z-index: 90;
+
+    display: none;
+}
+
+.notification-panel.show {
+    display: block;
+
+    animation:
+        panelIn .16s ease;
+}
+
+@keyframes panelIn {
+    from {
+        opacity: 0;
+        transform:
+            translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform:
+            translateY(0);
+    }
+}
+
+.notification-title {
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items: center;
+
+    padding:
+        14px 15px;
+
+    border-bottom:
+        1px solid var(--border);
+}
+
+.notification-title h3 {
+    font-size: 13px;
+}
+
+.notification-title button {
+    border: 0;
+
+    background: transparent;
+
+    color: #9180ff;
+
+    font-size: 10px;
+}
+
+.notification-list {
+    max-height: 350px;
+
+    overflow-y: auto;
+}
+
+.notification-item {
+    padding:
+        13px 15px;
+
+    border-bottom:
+        1px solid var(--border);
+}
+
+.notification-item strong {
+    display: block;
+
+    font-size: 12px;
+
+    margin-bottom: 4px;
+}
+
+.notification-item span {
+    color: var(--muted);
+
+    font-size: 10px;
+
+    line-height: 1.5;
+}
+
+.notification-empty {
+    padding: 30px 15px;
+
+    color: var(--muted);
+
+    text-align: center;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast-container {
+    position: fixed;
+
+    right: 20px;
+    bottom: 20px;
+
+    width:
+        min(350px, calc(100% - 40px));
+
+    z-index: 300;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 9px;
+}
+
+.toast {
+    background:
+        #141923;
+
+    border:
+        1px solid var(--border-hover);
+
+    border-left:
+        3px solid var(--primary);
+
+    border-radius: 11px;
+
+    padding: 13px 14px;
+
+    box-shadow:
+        0 15px 50px
+        rgba(0,0,0,.35);
+
+    animation:
+        toastIn .22s ease;
+}
+
+.toast strong {
+    display: block;
+
+    font-size: 12px;
+
+    margin-bottom: 3px;
+}
+
+.toast span {
+    color: var(--muted);
+
+    font-size: 10px;
+}
+
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform:
+            translateX(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform:
+            translateX(0);
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .sidebar {
+        width: 70px;
+
+        padding:
+            16px 8px;
+    }
+
+    .logo {
+        justify-content: center;
+
+        padding:
+            5px 0 20px;
+    }
+
+    .logo-text,
+    .nav-title,
+    .nav-btn span:not(.nav-icon) {
+        display: none;
+    }
+
+    .nav-btn {
+        justify-content: center;
+
+        padding:
+            12px 5px;
+    }
+
+    .nav-badge {
+        display: none !important;
+    }
+
+    .main {
+        margin-left: 70px;
+
+        padding:
+            25px 22px;
+    }
+
+    .stats {
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .main {
+        padding:
+            18px 14px 35px;
+    }
+
+    .topbar {
+        align-items:
+            flex-start;
+    }
+
+    .topbar h2 {
+        font-size: 21px;
+    }
+
+    .top-actions .secondary-btn {
+        display: none;
+    }
+
+    .top-actions {
+        gap: 6px;
+    }
+
+    .stats {
+        gap: 8px;
+    }
+
+    .stat-card {
+        padding: 14px;
+    }
+
+    .stat-number {
+        font-size: 23px;
+    }
+
+    .toolbar {
+        flex-direction:
+            column;
+
+        align-items:
+            stretch;
+    }
+
+    .toolbar select {
+        width: 100%;
+    }
+
+    .two-column {
+        grid-template-columns:
+            1fr;
+    }
+
+    .announcement-grid,
+    .reviewer-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+    .notification-panel {
+        right: 14px;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- ======================================================
+     SIDEBAR
+====================================================== -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            📚
+        </div>
+
+        <div class="logo-text">
+            BSIT<span> 1-4</span>
+        </div>
+
+    </div>
+
+
+    <div class="nav-title">
+        Workspace
+    </div>
+
+
+    <button
+        class="nav-btn active"
+        data-page="reviewers"
+    >
+
+        <span class="nav-icon">
+            📚
+        </span>
+
+        <span>
+            Dashboard
+        </span>
+
+    </button>
+
+
+    <button
+        class="nav-btn"
+        data-page="today"
+    >
+
+        <span class="nav-icon">
+            📅
+        </span>
+
+        <span>
+            Today
+        </span>
+
+    </button>
+
+
+    <button
+        class="nav-btn"
+        data-page="upcoming"
+    >
+
+        <span class="nav-icon">
+            🗓️
+        </span>
+
+        <span>
+            Upcoming
+        </span>
+
+    </button>
+
+
+    <button
+        class="nav-btn"
+        data-page="completed"
+    >
+
+        <span class="nav-icon">
+            ✓
+        </span>
+
+        <span>
+            Completed
+        </span>
+
+    </button>
+
+
+    <div class="nav-title">
+        Bulletin
+    </div>
+
+
+    <button
+        class="nav-btn"
+        data-page="announcements"
+    >
+
+        <span class="nav-icon">
+            📢
+        </span>
+
+        <span>
+            Announcements
+        </span>
+
+        <span
+            class="nav-badge"
+            id="announcementBadge"
+        >
+            0
+        </span>
+
+    </button>
+
+</aside>
+
+
+
+<!-- ======================================================
+     MAIN
+====================================================== -->
+
+<main class="main">
+
+
+    <div class="topbar">
+
+        <div>
+
+            <h2 id="pageTitle">
+                Dashboard
+            </h2>
+
+            <p id="pageSubtitle">
+                Manage your reviewers and study materials.
+            </p>
+
+        </div>
+
+
+        <div class="top-actions">
+
+            <button
+                class="icon-btn"
+                id="notificationButton"
+                title="Notifications"
+            >
+
+                🔔
+
+                <span
+                    class="bell-dot"
+                    id="bellDot"
+                ></span>
+
+            </button>
+
+
+            <button
+                class="primary-btn"
+                id="addButton"
+            >
+                + Add Reviewer
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         STATS
+    ================================================== -->
+
+    <section class="stats">
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <span>
+                    Total Reviewers
+                </span>
+
+                <span class="stat-icon">
+                    📚
+                </span>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="totalCount"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <span>
+                    Due Today
+                </span>
+
+                <span class="stat-icon">
+                    📅
+                </span>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="todayCount"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <span>
+                    Upcoming
+                </span>
+
+                <span class="stat-icon">
+                    🗓️
+                </span>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="upcomingCount"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <span>
+                    Completed
+                </span>
+
+                <span class="stat-icon">
+                    ✓
+                </span>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="completedCount"
+            >
+                0
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ==================================================
+         REVIEWER TOOLBAR
+    ================================================== -->
+
+    <div
+        class="toolbar"
+        id="reviewerToolbar"
+    >
+
+        <div class="search">
+
+            <input
+                id="searchInput"
+                type="text"
+                placeholder="Search reviewers..."
+            >
+
+        </div>
+
+
+        <select id="categoryFilter">
+
+            <option value="all">
+                All Categories
+            </option>
+
+        </select>
+
+
+        <select id="sortSelect">
+
+            <option value="dateAsc">
+                Due Date ↑
+            </option>
+
+            <option value="dateDesc">
+                Due Date ↓
+            </option>
+
+            <option value="newest">
+                Newest Added
+            </option>
+
+            <option value="oldest">
+                Oldest Added
+            </option>
+
+            <option value="title">
+                Title
+            </option>
+
+        </select>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         REVIEWERS
+    ================================================== -->
+
+    <section id="reviewerPage">
+
+        <div class="section-title">
+
+            <h3 id="reviewerSectionTitle">
+                Reviewers
+            </h3>
+
+            <span id="reviewerCountLabel">
+                0 items
+            </span>
+
+        </div>
+
+
+        <div
+            class="reviewer-grid"
+            id="reviewerGrid"
+        ></div>
+
+    </section>
+
+
+
+    <!-- ==================================================
+         ANNOUNCEMENTS
+    ================================================== -->
+
+    <section
+        id="announcementPage"
+        style="display:none;"
+    >
+
+        <div class="section-title">
+
+            <div>
+
+                <h3>
+                    Announcements
+                </h3>
+
+                <span>
+                    Important updates and messages.
+                </span>
+
+            </div>
+
+
+            <button
+                class="primary-btn"
+                id="addAnnouncementButton"
+            >
+                + Add Announcement
+            </button>
+
+        </div>
+
+
+        <div
+            class="announcement-grid"
+            id="announcementGrid"
+        ></div>
+
+    </section>
+
+</main>
+
+
+
+<!-- ======================================================
+     NOTIFICATION PANEL
+====================================================== -->
+
+<div
+    class="notification-panel"
+    id="notificationPanel"
+>
+
+    <div class="notification-title">
+
+        <h3>
+            Notifications
+        </h3>
+
+        <button id="markReadBtn">
+            Mark all as read
+        </button>
+
+    </div>
+
+
+    <div
+        class="notification-list"
+        id="notificationList"
+    ></div>
+
+</div>
+
+
+
+<!-- ======================================================
+     REVIEWER MODAL
+====================================================== -->
+
+<div
+    class="modal-overlay"
+    id="reviewerModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h2 id="reviewerModalTitle">
+                Add Reviewer
+            </h2>
+
+            <button
+                class="close"
+                id="closeReviewerModal"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="reviewerForm">
+
+            <div class="form-group">
+
+                <label>
+                    Reviewer Title
+                </label>
+
+                <input
+                    type="text"
+                    id="reviewerTitle"
+                    placeholder="Example: Mathematics Chapter 5"
+                    required
+                >
+
+            </div>
+
+
+            <div class="two-column">
+
+                <div class="form-group">
+
+                    <label>
+                        Category
+                    </label>
+
+                    <input
+                        type="text"
+                        id="reviewerCategory"
+                        placeholder="Example: Mathematics"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Due Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="reviewerDate"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="two-column">
+
+                <div class="form-group">
+
+                    <label>
+                        Due Time
+                    </label>
+
+                    <input
+                        type="time"
+                        id="reviewerTime"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Reminder
+                    </label>
+
+                    <select id="reviewerReminder">
+
+                        <option value="none">
+                            No reminder
+                        </option>
+
+                        <option value="15">
+                            15 minutes before
+                        </option>
+
+                        <option value="30">
+                            30 minutes before
+                        </option>
+
+                        <option value="60">
+                            1 hour before
+                        </option>
+
+                        <option value="1440">
+                            1 day before
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Notes
+                </label>
+
+                <textarea
+                    id="reviewerNotes"
+                    placeholder="Add notes about this reviewer..."
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Reviewer File
+                </label>
+
+                <div class="file-upload">
+
+                    📎 Attach reviewer file
+
+                    <input
+                        type="file"
+                        id="reviewerFile"
+                        accept=".txt,.md,.pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.csv"
+                    >
+
+                    <div
+                        class="selected-file"
+                        id="selectedFile"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="secondary-btn"
+                    id="cancelReviewer"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    Save Reviewer
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<!-- ======================================================
+     ANNOUNCEMENT MODAL
+====================================================== -->
+
+<div
+    class="modal-overlay"
+    id="announcementModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h2>
+                Add Announcement
+            </h2>
+
+            <button
+                class="close"
+                id="closeAnnouncementModal"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="announcementForm">
+
+            <div class="form-group">
+
+                <label>
+                    Announcement Title
+                </label>
+
+                <input
+                    type="text"
+                    id="announcementTitle"
+                    placeholder="Example: Exam Schedule Update"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Announcement Message
+                </label>
+
+                <textarea
+                    id="announcementMessage"
+                    placeholder="Write your announcement here..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="secondary-btn"
+                    id="cancelAnnouncement"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    Post Announcement
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<!-- ======================================================
+     TOAST
+====================================================== -->
+
+<div
+    class="toast-container"
+    id="toastContainer"
+></div>
+
+
+
+<script>
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+const REVIEWER_STORAGE =
+    "reviewhub_items_v3";
+
+const ANNOUNCEMENT_STORAGE =
+    "reviewhub_announcements_v1";
+
+const NOTIFICATION_STORAGE =
+    "reviewhub_notifications_v1";
+
+
+let reviewers =
+    JSON.parse(
+        localStorage.getItem(
+            REVIEWER_STORAGE
+        ) || "[]"
+    );
+
+
+let announcements =
+    JSON.parse(
+        localStorage.getItem(
+            ANNOUNCEMENT_STORAGE
+        ) || "[]"
+    );
+
+
+let notifications =
+    JSON.parse(
+        localStorage.getItem(
+            NOTIFICATION_STORAGE
+        ) || "[]"
+    );
+
+
+let editingId = null;
+
+let currentPage = "reviewers";
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const reviewerGrid =
+    document.getElementById(
+        "reviewerGrid"
+    );
+
+const announcementGrid =
+    document.getElementById(
+        "announcementGrid"
+    );
+
+const reviewerPage =
+    document.getElementById(
+        "reviewerPage"
+    );
+
+const announcementPage =
+    document.getElementById(
+        "announcementPage"
+    );
+
+const reviewerToolbar =
+    document.getElementById(
+        "reviewerToolbar"
+    );
+
+const reviewerModal =
+    document.getElementById(
+        "reviewerModal"
+    );
+
+const announcementModal =
+    document.getElementById(
+        "announcementModal"
+    );
+
+const notificationPanel =
+    document.getElementById(
+        "notificationPanel"
+    );
+
+const notificationList =
+    document.getElementById(
+        "notificationList"
+    );
+
+const announcementBadge =
+    document.getElementById(
+        "announcementBadge"
+    );
+
+const bellDot =
+    document.getElementById(
+        "bellDot"
+    );
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function saveReviewers() {
+
+    localStorage.setItem(
+        REVIEWER_STORAGE,
+        JSON.stringify(reviewers)
+    );
+}
+
+
+function saveAnnouncements() {
+
+    localStorage.setItem(
+        ANNOUNCEMENT_STORAGE,
+        JSON.stringify(announcements)
+    );
+}
+
+
+function saveNotifications() {
+
+    localStorage.setItem(
+        NOTIFICATION_STORAGE,
+        JSON.stringify(notifications)
+    );
+}
+
+
+function generateId() {
+
+    return Date.now() +
+        Math.random()
+            .toString(36)
+            .substring(2);
+}
+
+
+function escapeHTML(value) {
+
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+function formatDate(dateString) {
+
+    if (!dateString)
+        return "No date";
+
+    const date =
+        new Date(
+            dateString +
+            "T00:00:00"
+        );
+
+    return date.toLocaleDateString(
+        undefined,
+        {
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+        }
+    );
+}
+
+
+function formatDateTime(timestamp) {
+
+    const date =
+        new Date(timestamp);
+
+    return date.toLocaleString(
+        undefined,
+        {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "numeric",
+            minute: "2-digit"
+        }
+    );
+}
+
+
+function formatBytes(bytes) {
+
+    if (!bytes)
+        return "0 Bytes";
+
+    const units = [
+        "Bytes",
+        "KB",
+        "MB",
+        "GB"
+    ];
+
+    const index =
+        Math.floor(
+            Math.log(bytes) /
+            Math.log(1024)
+        );
+
+    return (
+        parseFloat(
+            (
+                bytes /
+                Math.pow(1024,index)
+            ).toFixed(2)
+        )
+        +
+        " " +
+        units[index]
+    );
+}
+
+
+function showToast(
+    title,
+    message
+) {
+
+    const container =
+        document.getElementById(
+            "toastContainer"
+        );
+
+    const toast =
+        document.createElement(
+            "div"
+        );
+
+    toast.className =
+        "toast";
+
+    toast.innerHTML = `
+        <strong>
+            ${escapeHTML(title)}
+        </strong>
+
+        <span>
+            ${escapeHTML(message)}
+        </span>
+    `;
+
+    container.appendChild(toast);
+
+    setTimeout(
+        () => toast.remove(),
+        4500
+    );
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+function updateStats() {
+
+    const today =
+        new Date()
+            .toISOString()
+            .split("T")[0];
+
+
+    document.getElementById(
+        "totalCount"
+    ).textContent =
+        reviewers.length;
+
+
+    document.getElementById(
+        "todayCount"
+    ).textContent =
+        reviewers.filter(
+            r =>
+                r.date === today &&
+                !r.completed
+        ).length;
+
+
+    document.getElementById(
+        "upcomingCount"
+    ).textContent =
+        reviewers.filter(
+            r =>
+                r.date > today &&
+                !r.completed
+        ).length;
+
+
+    document.getElementById(
+        "completedCount"
+    ).textContent =
+        reviewers.filter(
+            r =>
+                r.completed
+        ).length;
+}
+
+
+/* =========================================================
+   CATEGORY FILTER
+========================================================= */
+
+function updateCategoryFilter() {
+
+    const select =
+        document.getElementById(
+            "categoryFilter"
+        );
+
+    const current =
+        select.value;
+
+
+    const categories =
+        [
+            ...new Set(
+                reviewers
+                    .map(
+                        r =>
+                            r.category
+                    )
+                    .filter(Boolean)
+            )
+        ]
+        .sort();
+
+
+    select.innerHTML =
+        `
+        <option value="all">
+            All Categories
+        </option>
+        `;
+
+
+    categories.forEach(
+        category => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                category;
+
+            option.textContent =
+                category;
+
+            select.appendChild(
+                option
+            );
+        }
+    );
+
+
+    if (
+        categories.includes(
+            current
+        )
+    ) {
+
+        select.value =
+            current;
+    }
+}
+
+
+/* =========================================================
+   REVIEWER RENDER
+========================================================= */
+
+function renderReviewers() {
+
+    updateStats();
+
+    updateCategoryFilter();
+
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        )
+        .value
+        .toLowerCase();
+
+
+    const category =
+        document.getElementById(
+            "categoryFilter"
+        ).value;
+
+
+    const sort =
+        document.getElementById(
+            "sortSelect"
+        ).value;
+
+
+    const today =
+        new Date()
+            .toISOString()
+            .split("T")[0];
+
+
+    let list =
+        [...reviewers];
+
+
+    if (
+        currentPage ===
+        "today"
+    ) {
+
+        list =
+            list.filter(
+                r =>
+                    r.date === today &&
+                    !r.completed
+            );
+    }
+
+
+    if (
+        currentPage ===
+        "upcoming"
+    ) {
+
+        list =
+            list.filter(
+                r =>
+                    r.date > today &&
+                    !r.completed
+            );
+    }
+
+
+    if (
+        currentPage ===
+        "completed"
+    ) {
+
+        list =
+            list.filter(
+                r =>
+                    r.completed
+            );
+    }
+
+
+    if (search) {
+
+        list =
+            list.filter(
+                r =>
+                    (
+                        r.title +
+                        " " +
+                        r.category +
+                        " " +
+                        r.notes
+                    )
+                    .toLowerCase()
+                    .includes(search)
+            );
+    }
+
+
+    if (
+        category !==
+        "all"
+    ) {
+
+        list =
+            list.filter(
+                r =>
+                    r.category ===
+                    category
+            );
+    }
+
+
+    if (
+        sort ===
+        "dateAsc"
+    ) {
+
+        list.sort(
+            (a,b) =>
+                (
+                    a.date || ""
+                )
+                .localeCompare(
+                    b.date || ""
+                )
+        );
+    }
+
+
+    if (
+        sort ===
+        "dateDesc"
+    ) {
+
+        list.sort(
+            (a,b) =>
+                (
+                    b.date || ""
+                )
+                .localeCompare(
+                    a.date || ""
+                )
+        );
+    }
+
+
+    if (
+        sort ===
+        "newest"
+    ) {
+
+        list.sort(
+            (a,b) =>
+                b.createdAt -
+                a.createdAt
+        );
+    }
+
+
+    if (
+        sort ===
+        "oldest"
+    ) {
+
+        list.sort(
+            (a,b) =>
+                a.createdAt -
+                b.createdAt
+        );
+    }
+
+
+    if (
+        sort ===
+        "title"
+    ) {
+
+        list.sort(
+            (a,b) =>
+                a.title
+                    .localeCompare(
+                        b.title
+                    )
+        );
+    }
+
+
+    document.getElementById(
+        "reviewerCountLabel"
+    ).textContent =
+        `${list.length} item${list.length === 1 ? "" : "s"}`;
+
+
+    reviewerGrid.innerHTML =
+        "";
+
+
+    if (!list.length) {
+
+        reviewerGrid.innerHTML = `
+
+            <div
+                class="empty"
+                style="grid-column:1/-1;"
+            >
+
+                <div class="empty-icon">
+                    📚
+                </div>
+
+                <h3>
+                    No reviewers found
+                </h3>
+
+                <p>
+                    Add your first reviewer to get started.
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    list.forEach(
+        item => {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                "reviewer-card" +
+                (
+                    item.completed
+                    ? " completed-card"
+                    : ""
+                );
+
+
+            let fileHTML = "";
+
+
+            if (
+                item.file
+            ) {
+
+                fileHTML = `
+
+                    <div class="file-box">
+
+                        <div>
+                            📎
+                        </div>
+
+                        <div class="file-info">
+
+                            <strong>
+                                ${escapeHTML(
+                                    item.file.name
+                                )}
+                            </strong>
+
+                            <small>
+                                ${formatBytes(
+                                    item.file.size
+                                )}
+                            </small>
+
+                        </div>
+
+                        <button
+                            class="open-file"
+                            onclick="openFile('${item.id}')"
+                        >
+                            Open
+                        </button>
+
+                    </div>
+                `;
+            }
+
+
+            card.innerHTML = `
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h3>
+                            ${escapeHTML(
+                                item.title
+                            )}
+                        </h3>
+
+                        <span class="category">
+                            ${escapeHTML(
+                                item.category
+                            )}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="due">
+
+                    Due:
+
+                    <strong>
+                        ${formatDate(
+                            item.date
+                        )}
+
+                        ${
+                            item.time
+                            ? " • " +
+                              escapeHTML(
+                                  item.time
+                              )
+                            : ""
+                        }
+
+                    </strong>
+
+                </div>
+
+
+                ${
+                    item.notes
+                    ?
+                    `
+                        <div class="notes">
+                            ${escapeHTML(
+                                item.notes
+                            )}
+                        </div>
+                    `
+                    :
+                    ""
+                }
+
+
+                ${fileHTML}
+
+
+                <div class="card-actions">
+
+                    <button
+                        onclick="editReviewer('${item.id}')"
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        class="complete"
+                        onclick="toggleComplete('${item.id}')"
+                    >
+                        ${
+                            item.completed
+                            ? "Undo"
+                            : "Complete"
+                        }
+                    </button>
+
+                    <button
+                        class="delete"
+                        onclick="deleteReviewer('${item.id}')"
+                    >
+                        Delete
+                    </button>
+
+                </div>
+            `;
+
+
+            reviewerGrid.appendChild(
+                card
+            );
+
+        }
+    );
+}
+
+
+/* =========================================================
+   FILE READER
+========================================================= */
+
+function readFile(file) {
+
+    return new Promise(
+        (resolve,reject) => {
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                () => {
+
+                    resolve({
+
+                        name:
+                            file.name,
+
+                        type:
+                            file.type,
+
+                        size:
+                            file.size,
+
+                        data:
+                            reader.result
+
+                    });
+                };
+
+
+            reader.onerror =
+                reject;
+
+
+            reader.readAsDataURL(
+                file
+            );
+        }
+    );
+}
+
+
+/* =========================================================
+   OPEN FILE
+========================================================= */
+
+function openFile(id) {
+
+    const reviewer =
+        reviewers.find(
+            r =>
+                r.id === id
+        );
+
+
+    if (
+        !reviewer ||
+        !reviewer.file
+    )
+        return;
+
+
+    const base64 =
+        reviewer.file.data
+            .split(",")[1];
+
+
+    const byteCharacters =
+        atob(base64);
+
+
+    const byteArrays = [];
+
+
+    for (
+        let offset = 0;
+        offset <
+        byteCharacters.length;
+        offset += 512
+    ) {
+
+        const slice =
+            byteCharacters.slice(
+                offset,
+                offset + 512
+            );
+
+
+        const byteNumbers =
+            new Array(
+                slice.length
+            );
+
+
+        for (
+            let i = 0;
+            i < slice.length;
+            i++
+        ) {
+
+            byteNumbers[i] =
+                slice.charCodeAt(i);
+        }
+
+
+        byteArrays.push(
+            new Uint8Array(
+                byteNumbers
+            )
+        );
+    }
+
+
+    const blob =
+        new Blob(
+            byteArrays,
+            {
+                type:
+                    reviewer.file.type ||
+                    "application/octet-stream"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(
+            blob
+        );
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+}
+
+
+/* =========================================================
+   REVIEWER MODAL
+========================================================= */
+
+function openReviewerModal(
+    id = null
+) {
+
+    editingId =
+        id;
+
+
+    document.getElementById(
+        "reviewerForm"
+    ).reset();
+
+
+    document.getElementById(
+        "selectedFile"
+    ).textContent =
+        "";
+
+
+    if (id) {
+
+        const reviewer =
+            reviewers.find(
+                r =>
+                    r.id === id
+            );
+
+
+        if (!reviewer)
+            return;
+
+
+        document.getElementById(
+            "reviewerModalTitle"
+        ).textContent =
+            "Edit Reviewer";
+
+
+        document.getElementById(
+            "reviewerTitle"
+        ).value =
+            reviewer.title;
+
+
+        document.getElementById(
+            "reviewerCategory"
+        ).value =
+            reviewer.category;
+
+
+        document.getElementById(
+            "reviewerDate"
+        ).value =
+            reviewer.date;
+
+
+        document.getElementById(
+            "reviewerTime"
+        ).value =
+            reviewer.time || "";
+
+
+        document.getElementById(
+            "reviewerReminder"
+        ).value =
+            reviewer.reminder ||
+            "none";
+
+
+        document.getElementById(
+            "reviewerNotes"
+        ).value =
+            reviewer.notes || "";
+
+
+        if (
+            reviewer.file
+        ) {
+
+            document.getElementById(
+                "selectedFile"
+            ).textContent =
+                "Current file: " +
+                reviewer.file.name;
+        }
+
+    }
+
+    else {
+
+        document.getElementById(
+            "reviewerModalTitle"
+        ).textContent =
+            "Add Reviewer";
+    }
+
+
+    reviewerModal.classList.add(
+        "show"
+    );
+}
+
+
+function closeReviewerModal() {
+
+    reviewerModal.classList.remove(
+        "show"
+    );
+
+    editingId =
+        null;
+}
+
+
+/* =========================================================
+   SAVE REVIEWER
+========================================================= */
+
+document.getElementById(
+    "reviewerForm"
+).addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+
+        const title =
+            document.getElementById(
+                "reviewerTitle"
+            ).value.trim();
+
+
+        const category =
+            document.getElementById(
+                "reviewerCategory"
+            ).value.trim();
+
+
+        const date =
+            document.getElementById(
+                "reviewerDate"
+            ).value;
+
+
+        const time =
+            document.getElementById(
+                "reviewerTime"
+            ).value;
+
+
+        const reminder =
+            document.getElementById(
+                "reviewerReminder"
+            ).value;
+
+
+        const notes =
+            document.getElementById(
+                "reviewerNotes"
+            ).value.trim();
+
+
+        const fileInput =
+            document.getElementById(
+                "reviewerFile"
+            );
+
+
+        let fileData =
+            null;
+
+
+        if (
+            fileInput.files.length
+        ) {
+
+            const file =
+                fileInput.files[0];
+
+
+            if (
+                file.size >
+                5 * 1024 * 1024
+            ) {
+
+                alert(
+                    "File is too large. Maximum size is 5 MB."
+                );
+
+                return;
+            }
+
+
+            fileData =
+                await readFile(
+                    file
+                );
+        }
+
+
+        if (editingId) {
+
+            const index =
+                reviewers.findIndex(
+                    r =>
+                        r.id ===
+                        editingId
+                );
+
+
+            if (
+                index !== -1
+            ) {
+
+                const old =
+                    reviewers[index];
+
+
+                reviewers[index] = {
+
+                    ...old,
+
+                    title,
+
+                    category,
+
+                    date,
+
+                    time,
+
+                    reminder,
+
+                    notes,
+
+                    file:
+                        fileData ||
+                        old.file ||
+                        null
+                };
+            }
+
+        }
+
+        else {
+
+            const reviewer = {
+
+                id:
+                    generateId(),
+
+                title,
+
+                category,
+
+                date,
+
+                time,
+
+                reminder,
+
+                notes,
+
+                completed:
+                    false,
+
+                createdAt:
+                    Date.now(),
+
+                file:
+                    fileData
+
+            };
+
+
+            reviewers.unshift(
+                reviewer
+            );
+
+
+            addNotification(
+                "New Reviewer Added",
+                `"${title}" was added.`
+            );
+
+
+            showToast(
+                "Reviewer Added",
+                title
+            );
+
+
+            sendBrowserNotification(
+                "New Reviewer Added",
+                title
+            );
+        }
+
+
+        saveReviewers();
+
+        renderReviewers();
+
+        closeReviewerModal();
+
+    }
+);
+
+
+/* =========================================================
+   EDIT
+========================================================= */
+
+function editReviewer(id) {
+
+    openReviewerModal(
+        id
+    );
+}
+
+
+/* =========================================================
+   DELETE
+========================================================= */
+
+function deleteReviewer(id) {
+
+    const reviewer =
+        reviewers.find(
+            r =>
+                r.id === id
+        );
+
+
+    if (!reviewer)
+        return;
+
+
+    if (
+        !confirm(
+            `Delete "${reviewer.title}"?`
+        )
+    )
+        return;
+
+
+    reviewers =
+        reviewers.filter(
+            r =>
+                r.id !== id
+        );
+
+
+    saveReviewers();
+
+    renderReviewers();
+}
+
+
+/* =========================================================
+   COMPLETE
+========================================================= */
+
+function toggleComplete(id) {
+
+    const reviewer =
+        reviewers.find(
+            r =>
+                r.id === id
+        );
+
+
+    if (!reviewer)
+        return;
+
+
+    reviewer.completed =
+        !reviewer.completed;
+
+
+    saveReviewers();
+
+    renderReviewers();
+}
+
+
+/* =========================================================
+   ANNOUNCEMENTS
+========================================================= */
+
+function renderAnnouncements() {
+
+    announcementGrid.innerHTML =
+        "";
+
+
+    if (
+        !announcements.length
+    ) {
+
+        announcementGrid.innerHTML = `
+
+            <div
+                class="empty"
+                style="grid-column:1/-1;"
+            >
+
+                <div class="empty-icon">
+                    📢
+                </div>
+
+                <h3>
+                    No announcements yet
+                </h3>
+
+                <p>
+                    Important announcements will appear here.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    announcements
+        .sort(
+            (a,b) =>
+                b.createdAt -
+                a.createdAt
+        )
+        .forEach(
+            announcement => {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "announcement-card" +
+                    (
+                        announcement.unread
+                        ? " new"
+                        : ""
+                    );
+
+
+                card.innerHTML = `
+
+                    <div
+                        class="announcement-header"
+                    >
+
+                        <div
+                            class="announcement-icon"
+                        >
+                            📢
+                        </div>
+
+
+                        <div>
+
+                            <h3>
+                                ${escapeHTML(
+                                    announcement.title
+                                )}
+                            </h3>
+
+                            <div
+                                class="announcement-date"
+                            >
+                                ${formatDateTime(
+                                    announcement.createdAt
+                                )}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="announcement-message"
+                    >
+                        ${escapeHTML(
+                            announcement.message
+                        )}
+                    </div>
+
+
+                    <div
+                        class="announcement-actions"
+                    >
+
+                        <button
+                            onclick="deleteAnnouncement('${announcement.id}')"
+                        >
+                            Delete
+                        </button>
+
+                    </div>
+
+                `;
+
+
+                announcementGrid.appendChild(
+                    card
+                );
+            }
+        );
+
+
+    updateAnnouncementBadge();
+}
+
+
+/* =========================================================
+   ANNOUNCEMENT MODAL
+========================================================= */
+
+function openAnnouncementModal() {
+
+    document.getElementById(
+        "announcementForm"
+    ).reset();
+
+
+    announcementModal.classList.add(
+        "show"
+    );
+}
+
+
+function closeAnnouncementModal() {
+
+    announcementModal.classList.remove(
+        "show"
+    );
+}
+
+
+/* =========================================================
+   ADD ANNOUNCEMENT
+========================================================= */
+
+document.getElementById(
+    "announcementForm"
+).addEventListener(
+    "submit",
+    event => {
+
+        event.preventDefault();
+
+
+        const title =
+            document.getElementById(
+                "announcementTitle"
+            ).value.trim();
+
+
+        const message =
+            document.getElementById(
+                "announcementMessage"
+            ).value.trim();
+
+
+        if (
+            !title ||
+            !message
+        )
+            return;
+
+
+        const announcement = {
+
+            id:
+                generateId(),
+
+            title,
+
+            message,
+
+            createdAt:
+                Date.now(),
+
+            unread:
+                true
+
+        };
+
+
+        announcements.unshift(
+            announcement
+        );
+
+
+        saveAnnouncements();
+
+
+        addNotification(
+            "New Announcement",
+            title
+        );
+
+
+        showToast(
+            "Announcement Posted",
+            title
+        );
+
+
+        sendBrowserNotification(
+            "New Announcement",
+            title
+        );
+
+
+        renderAnnouncements();
+
+
+        closeAnnouncementModal();
+
+    }
+);
+
+
+/* =========================================================
+   DELETE ANNOUNCEMENT
+========================================================= */
+
+function deleteAnnouncement(
+    id
+) {
+
+    const announcement =
+        announcements.find(
+            a =>
+                a.id === id
+        );
+
+
+    if (
+        !announcement
+    )
+        return;
+
+
+    if (
+        !confirm(
+            `Delete "${announcement.title}"?`
+        )
+    )
+        return;
+
+
+    announcements =
+        announcements.filter(
+            a =>
+                a.id !== id
+        );
+
+
+    saveAnnouncements();
+
+    renderAnnouncements();
+}
+
+
+/* =========================================================
+   NOTIFICATIONS
+========================================================= */
+
+function addNotification(
+    title,
+    message
+) {
+
+    notifications.unshift({
+
+        id:
+            generateId(),
+
+        title,
+
+        message,
+
+        createdAt:
+            Date.now(),
+
+        read:
+            false
+
+    });
+
+
+    notifications =
+        notifications.slice(
+            0,
+            50
+        );
+
+
+    saveNotifications();
+
+    updateNotificationUI();
+}
+
+
+function updateNotificationUI() {
+
+    const unread =
+        notifications.filter(
+            n =>
+                !n.read
+        ).length;
+
+
+    bellDot.style.display =
+        unread
+        ? "block"
+        : "none";
+
+
+    notificationList.innerHTML =
+        "";
+
+
+    if (
+        !notifications.length
+    ) {
+
+        notificationList.innerHTML = `
+
+            <div
+                class="notification-empty"
+            >
+                No notifications yet.
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    notifications.forEach(
+        notification => {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "notification-item";
+
+
+            item.innerHTML = `
+
+                <strong>
+                    ${escapeHTML(
+                        notification.title
+                    )}
+                </strong>
+
+                <span>
+                    ${escapeHTML(
+                        notification.message
+                    )}
+                    •
+                    ${formatDateTime(
+                        notification.createdAt
+                    )}
+                </span>
+
+            `;
+
+
+            notificationList.appendChild(
+                item
+            );
+        }
+    );
+}
+
+
+/* =========================================================
+   MARK READ
+========================================================= */
+
+document.getElementById(
+    "markReadBtn"
+).addEventListener(
+    "click",
+    () => {
+
+        notifications.forEach(
+            n =>
+                n.read = true
+        );
+
+
+        saveNotifications();
+
+        updateNotificationUI();
+
+    }
+);
+
+
+/* =========================================================
+   ANNOUNCEMENT BADGE
+========================================================= */
+
+function updateAnnouncementBadge() {
+
+    const unread =
+        announcements.filter(
+            a =>
+                a.unread
+        ).length;
+
+
+    if (
+        unread > 0
+    ) {
+
+        announcementBadge.style.display =
+            "flex";
+
+        announcementBadge.textContent =
+            unread > 99
+            ? "99+"
+            : unread;
+
+    }
+
+    else {
+
+        announcementBadge.style.display =
+            "none";
+    }
+}
+
+
+/* =========================================================
+   BROWSER NOTIFICATIONS
+========================================================= */
+
+async function enableNotifications() {
+
+    if (
+        !(
+            "Notification"
+            in window
+        )
+    )
+        return;
+
+
+    if (
+        Notification.permission ===
+        "default"
+    ) {
+
+        try {
+
+            await Notification.requestPermission();
+
+        }
+
+        catch (error) {
+
+            console.log(
+                "Notification permission unavailable."
+            );
+        }
+    }
+}
+
+
+function sendBrowserNotification(
+    title,
+    body
+) {
+
+    if (
+        !(
+            "Notification"
+            in window
+        )
+    )
+        return;
+
+
+    if (
+        Notification.permission ===
+        "granted"
+    ) {
+
+        new Notification(
+            title,
+            {
+                body
+            }
+        );
+    }
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+document.querySelectorAll(
+    ".nav-btn"
+).forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            function() {
+
+                document
+                    .querySelectorAll(
+                        ".nav-btn"
+                    )
+                    .forEach(
+                        b =>
+                            b.classList.remove(
+                                "active"
+                            )
+                    );
+
+
+                this.classList.add(
+                    "active"
+                );
+
+
+                currentPage =
+                    this.dataset.page;
+
+
+                if (
+                    currentPage ===
+                    "announcements"
+                ) {
+
+                    reviewerPage.style.display =
+                        "none";
+
+                    reviewerToolbar.style.display =
+                        "none";
+
+                    announcementPage.style.display =
+                        "block";
+
+
+                    document.getElementById(
+                        "pageTitle"
+                    ).textContent =
+                        "Announcements";
+
+
+                    document.getElementById(
+                        "pageSubtitle"
+                    ).textContent =
+                        "Important updates and messages.";
+
+
+                    document.getElementById(
+                        "addButton"
+                    ).style.display =
+                        "none";
+
+
+                    announcements.forEach(
+                        a =>
+                            a.unread =
+                                false
+                    );
+
+
+                    saveAnnouncements();
+
+                    renderAnnouncements();
+
+                }
+
+                else {
+
+                    reviewerPage.style.display =
+                        "block";
+
+                    reviewerToolbar.style.display =
+                        "flex";
+
+                    announcementPage.style.display =
+                        "none";
+
+
+                    document.getElementById(
+                        "addButton"
+                    ).style.display =
+                        "block";
+
+
+                    const pages = {
+
+                        reviewers: [
+                            "All Reviewers",
+                            "Manage your reviewers and study materials."
+                        ],
+
+                        today: [
+                            "Today",
+                            "Reviewers due today."
+                        ],
+
+                        upcoming: [
+                            "Upcoming",
+                            "Your upcoming reviewers."
+                        ],
+
+                        completed: [
+                            "Completed",
+                            "Reviewers you have completed."
+                        ]
+
+                    };
+
+
+                    document.getElementById(
+                        "pageTitle"
+                    ).textContent =
+                        pages[currentPage][0];
+
+
+                    document.getElementById(
+                        "pageSubtitle"
+                    ).textContent =
+                        pages[currentPage][1];
+
+
+                    document.getElementById(
+                        "reviewerSectionTitle"
+                    ).textContent =
+                        pages[currentPage][0];
+
+
+                    renderReviewers();
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+document.getElementById(
+    "addButton"
+).addEventListener(
+    "click",
+    () =>
+        openReviewerModal()
+);
+
+
+document.getElementById(
+    "addAnnouncementButton"
+).addEventListener(
+    "click",
+    openAnnouncementModal
+);
+
+
+document.getElementById(
+    "closeReviewerModal"
+).addEventListener(
+    "click",
+    closeReviewerModal
+);
+
+
+document.getElementById(
+    "cancelReviewer"
+).addEventListener(
+    "click",
+    closeReviewerModal
+);
+
+
+document.getElementById(
+    "closeAnnouncementModal"
+).addEventListener(
+    "click",
+    closeAnnouncementModal
+);
+
+
+document.getElementById(
+    "cancelAnnouncement"
+).addEventListener(
+    "click",
+    closeAnnouncementModal
+);
+
+
+/* =========================================================
+   NOTIFICATION BUTTON
+========================================================= */
+
+document.getElementById(
+    "notificationButton"
+).addEventListener(
+    "click",
+    event => {
+
+        event.stopPropagation();
+
+        notificationPanel.classList.toggle(
+            "show"
+        );
+    }
+);
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+document.getElementById(
+    "searchInput"
+).addEventListener(
+    "input",
+    renderReviewers
+);
+
+
+document.getElementById(
+    "categoryFilter"
+).addEventListener(
+    "change",
+    renderReviewers
+);
+
+
+document.getElementById(
+    "sortSelect"
+).addEventListener(
+    "change",
+    renderReviewers
+);
+
+
+/* =========================================================
+   FILE INPUT
+========================================================= */
+
+document.getElementById(
+    "reviewerFile"
+).addEventListener(
+    "change",
+    function() {
+
+        const file =
+            this.files[0];
+
+
+        document.getElementById(
+            "selectedFile"
+        ).textContent =
+            file
+            ? file.name
+            : "";
+    }
+);
+
+
+/* =========================================================
+   OUTSIDE CLICK
+========================================================= */
+
+reviewerModal.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            reviewerModal
+        ) {
+
+            closeReviewerModal();
+        }
+    }
+);
+
+
+announcementModal.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            announcementModal
+        ) {
+
+            closeAnnouncementModal();
+        }
+    }
+);
+
+
+document.addEventListener(
+    "click",
+    event => {
+
+        if (
+            !notificationPanel.contains(
+                event.target
+            ) &&
+            event.target.id !==
+            "notificationButton"
+        ) {
+
+            notificationPanel.classList.remove(
+                "show"
+            );
+        }
+    }
+);
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key ===
+            "Escape"
+        ) {
+
+            closeReviewerModal();
+
+            closeAnnouncementModal();
+
+            notificationPanel.classList.remove(
+                "show"
+            );
+        }
+
+
+        if (
+            event.ctrlKey &&
+            event.key.toLowerCase() ===
+            "k"
+        ) {
+
+            event.preventDefault();
+
+
+            if (
+                currentPage ===
+                "announcements"
+            ) {
+
+                openAnnouncementModal();
+
+            }
+
+            else {
+
+                openReviewerModal();
+
+            }
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ENABLE NOTIFICATIONS
+========================================================= */
+
+document.addEventListener(
+    "click",
+    function notificationSetup() {
+
+        enableNotifications();
+
+        document.removeEventListener(
+            "click",
+            notificationSetup
+        );
+
+    }
+);
+
+
+/* =========================================================
+   START
+========================================================= */
+
+renderReviewers();
+
+renderAnnouncements();
+
+updateNotificationUI();
+
+updateAnnouncementBadge();
+
+</script>
+
+</body>
+</html>
+```
